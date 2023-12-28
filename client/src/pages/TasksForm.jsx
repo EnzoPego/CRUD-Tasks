@@ -1,27 +1,51 @@
 import { Form, Formik } from'formik'
-import { createTaskRequest }  from'../api/tasks.api'
+import { useTasks } from '../context/TaskContext'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 
 
 export const TasksForm = () => {
 
+  const { createTask , getTask, updateTask } = useTasks()
+  const [task , setTask] = useState ({
+    title:'',
+    description:''
+  })
+
+  const params = useParams()
+  const navigate = useNavigate()
+
+  useEffect(()=>{
+    const loadTasks = async () => {
+      if(params.id){
+        const task = await getTask(params.id)
+        console.log(task)
+        setTask({
+          title: task.title,
+          description:task.description
+        })
+      }
+    }
+    loadTasks()
+  },[])
+    
   return (
 
    <div>
 
-    <Formik initialValues={{
-      title:'',
-      description:''
-    }}
+    {params.id ? <h1>Edit task</h1> : <h1>New task</h1> }
 
+    <Formik initialValues={task}
+    enableReinitialize={true}
     onSubmit={ async (values,{resetForm}) =>{
-      console.log(values)
-      try {
-        const response = await createTaskRequest(values)
-        console.log(response)
-        resetForm()
-      } catch (error) {
-        console.log(error)        
+      //console.log(values)
+      if(params.id){
+       await updateTask(params.id,values)
+       navigate('/')
+      }else{
+       await createTask(values)     
       }
+      resetForm()
     }}
     >
 
