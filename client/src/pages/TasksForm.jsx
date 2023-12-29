@@ -32,35 +32,37 @@ export const TasksForm = () => {
   return (
 
    <div>
-
-    {params.id ? <h1>Edit task</h1> : <h1>New task</h1> }
-
     <Formik initialValues={task}
     enableReinitialize={true}
     onSubmit={ async (values,{resetForm}) =>{
       //console.log(values)
       if(params.id){
-       await updateTask(params.id,values)
-       navigate('/')
+        await updateTask(params.id,values)
       }else{
-       await createTask(values)     
+        await createTask(values)     
       }
+      navigate('/')
       resetForm()
     }}
     >
 
       {({handleChange , handleSubmit, values, isSubmitting})=>(
-          <Form onSubmit={handleSubmit}>
-          <label>title</label>
-          <input type="text"
+        <Form onSubmit={handleSubmit} className='bg-slate-300 max-w-sm rounded-md p-4 mx-auto mt-10'>
+
+          {params.id ? <h1 className='text-xl font-bold uppercase text-center'>Edit task</h1> : <h1 className='text-xl font-bold uppercase text-center'>New task</h1> }
+
+          <label className='block'>Title</label>
+          <input className='px-2 py-1 rounded-sm w-full'
+          type="text"
           name='title'
           placeholder='Write a title'
           onChange={handleChange}
           value={values.title}
           />
   
-          <label>description</label>
-          <textarea name="description"
+          <label className='block'>Description</label>
+          <textarea className='px-2 py-1 rounded-sm w-full'
+          name="description"
           rows="3"
           placeholder='Write a description'
           onChange={handleChange}
@@ -68,7 +70,8 @@ export const TasksForm = () => {
           >
           </textarea>
   
-          <button type='submit' disabled={isSubmitting} >
+          <button className='block bg-indigo-500 px-2 py-1 text-white w-full rounded-md'
+          type='submit' disabled={isSubmitting} >
           {isSubmitting ? "Saving...": "Save"}                      
           </button>
   

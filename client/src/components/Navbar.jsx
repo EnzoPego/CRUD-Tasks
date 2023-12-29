@@ -3,15 +3,17 @@ import { TasksForm } from '../pages/TasksForm'
 
 export const NavBar = () => {
   return (
-    <div>
+    <div className='bg-neutral-700 flex justify-between px-20 py-4'>
+      <Link to={'/'} className='text-white font-bold text-xl'>
         <h1>React MySQL</h1>
+      </Link>
 
-        <ul>
+        <ul className='flex gap-1'>
             <li>
-                <Link to='/'>Home</Link>
+                <Link to='/' className='bg-slate-200 px-2 py-1'>Home</Link>
             </li>
             <li>
-                <Link to='/new'>CreateTasks</Link>
+                <Link to='/new' className='bg-teal-200 px-2 py-1'>CreateTasks</Link>
             </li>
         </ul>
 
